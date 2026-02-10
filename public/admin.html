@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - MINI INCONNU XD LITE</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            background: var(--darker-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .admin-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+        
+        .user-info {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover {
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+        
+        .main-content {
+            padding: 1.5rem;
+            background: var(--dark-bg);
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        .admin-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .admin-tab.active {
+            color: #8b5cf6;
+            border-bottom-color: #8b5cf6;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-row, .server-row {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s;
+        }
+        
+        .user-row:hover, .server-row:hover {
+            background-color: var(--card-bg);
+        }
+        
+        .user-info-small {
+            flex: 1;
+        }
+        
+        .user-actions, .server-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .modal-content {
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .user-details {
+            background: var(--darker-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -250px;
+                width: 250px;
+                z-index: 1000;
+                transition: left 0.3s;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--text-primary);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+            
+            .user-row, .server-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .user-actions, .server-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="sidebar-logo">
+                    <i class="fas fa-rocket"></i>
+                    MINI INCONNU
+                </a>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div>
+                        <div class="font-medium" id="userName">Admin</div>
+                        <div class="admin-badge">ADMINISTRATOR</div>
+                        <div class="text-secondary text-sm mt-2">
+                            <i class="fas fa-envelope"></i> inconnuboytech@gmail.com
+                        </div>
+                        <div class="text-secondary text-sm">
+                            <i class="fas fa-phone"></i> +509 3566 2592
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <a href="/dashboard" class="nav-item">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="/admin" class="nav-item active">
+                    <i class="fas fa-user-shield"></i> Admin Panel
+                </a>
+                <div class="nav-item" style="margin-top: 2rem;">
+                    <div class="flex items-center justify-between">
+                        <span>Platform Status</span>
+                        <span class="status-badge status-active">Online</span>
+                    </div>
+                </div>
+                <button onclick="Utils.logout()" class="nav-item" style="background: none; border: none; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="page-header">
+                <div>
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="welcome-message">
+                        <h1>Admin Control Panel</h1>
+                        <p>Manage users, servers, and platform settings</p>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="btn btn-primary" onclick="refreshAll()">
+                        <i class="fas fa-sync-alt"></i> Refresh All
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Stats Overview -->
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="statTotalUsers">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="stat-number" id="statTotalServers">0</div>
+                    <div class="stat-label">Active Servers</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-number" id="statTotalCoins">0</div>
+                    <div class="stat-label">Total Coins</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-number" id="statGrowth">0%</div>
+                    <div class="stat-label">Growth (7 days)</div>
+                </div>
+            </div>
+            
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="users">
+                    <i class="fas fa-users"></i> Users
+                </button>
+                <button class="admin-tab" data-tab="servers">
+                    <i class="fas fa-server"></i> Servers
+                </button>
+                <button class="admin-tab" data-tab="transactions">
+                    <i class="fas fa-exchange-alt"></i> Transactions
+                </button>
+                <button class="admin-tab" data-tab="settings">
+                    <i class="fas fa-cog"></i> Platform Settings
+                </button>
+                <button class="admin-tab" data-tab="logs">
+                    <i class="fas fa-clipboard-list"></i> System Logs
+                </button>
+            </div>
+            
+            <!-- Users Tab -->
+            <div class="tab-content active" id="usersTab">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search users by name, email, or ID..." 
+                           onkeyup="searchUsers(this.value)">
+                    <button class="btn btn-primary" onclick="addNewUser()">
+                        <i class="fas fa-user-plus"></i> Add User
+                    </button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="exportUsers()">
+                        <i class="fas fa-download"></i> Export Users
+                    </button>
+                    <button class="btn btn-secondary" onclick="bulkAction('activate')">
+                        <i class="fas fa-check"></i> Activate Selected
+                    </button>
+                    <button class="btn btn-danger" onclick="bulkAction('delete')">
+                        <i class="fas fa-trash"></i> Delete Selected
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;">
+                                    <input type="checkbox" id="selectAllUsers" onchange="toggleSelectAllUsers()">
+                                </th>
+                                <th>User</th>
+                                <th>Coins</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                                    <i class="fas fa-users" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                    <p>Loading users...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-secondary" id="usersPaginationInfo">
+                        Showing 0 of 0 users
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-secondary btn-small" onclick="prevUsersPage()" id="prevUsersBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="nextUsersPage()" id="nextUsersBtn" disabled>
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Servers Tab -->
+            <div class="tab-content" id="serversTab">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search servers by name or user..." 
+                           onkeyup="searchServers(this.value)">
+                    <button class="btn btn-primary" onclick="createServerForUser()">
+                        <i class="fas fa-plus"></i> Create Server
+                    </button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="exportServers()">
+                        <i class="fas fa-download"></i> Export Servers
+                    </button>
+                    <button class="btn btn-warning" onclick="bulkActionServers('expire')">
+                        <i class="fas fa-clock"></i> Expire Selected
+                    </button>
+                    <button class="btn btn-danger" onclick="bulkActionServers('delete')">
+                        <i class="fas fa-trash"></i> Delete Selected
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;">
+                                    <input type="checkbox" id="selectAllServers" onchange="toggleSelectAllServers()">
+                                </th>
+                                <th>Server</th>
+                                <th>User</th>
+                                <th>Status</th>
+                                <th>Coins Used</th>
+                                <th>Expires</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="serversTable">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                                    <i class="fas fa-server" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                    <p>Loading servers...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-secondary" id="serversPaginationInfo">
+                        Showing 0 of 0 servers
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-secondary btn-small" onclick="prevServersPage()" id="prevServersBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="nextServersPage()" id="nextServersBtn" disabled>
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transactions Tab -->
+            <div class="tab-content" id="transactionsTab">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search transactions..." 
+                           onkeyup="searchTransactions(this.value)">
+                    <button class="btn btn-primary" onclick="addTransaction()">
+                        <i class="fas fa-plus"></i> Add Transaction
+                    </button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="exportTransactions()">
+                        <i class="fas fa-download"></i> Export Transactions
+                    </button>
+                    <button class="btn btn-secondary" onclick="filterTransactions('today')">
+                        <i class="fas fa-calendar-day"></i> Today
+                    </button>
+                    <button class="btn btn-secondary" onclick="filterTransactions('week')">
+                        <i class="fas fa-calendar-week"></i> This Week
+                    </button>
+                    <button class="btn btn-secondary" onclick="filterTransactions('month')">
+                        <i class="fas fa-calendar-alt"></i> This Month
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Balance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsTable">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                                    <i class="fas fa-exchange-alt" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                    <p>Loading transactions...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-secondary" id="transactionsPaginationInfo">
+                        Showing 0 of 0 transactions
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-secondary btn-small" onclick="prevTransactionsPage()" id="prevTransactionsBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="nextTransactionsPage()" id="nextTransactionsBtn" disabled>
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settingsTab">
+                <div class="settings-section">
+                    <h3 class="mb-3"><i class="fas fa-cog"></i> Platform Configuration</h3>
+                    
+                    <form id="platformSettingsForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Signup Bonus Coins</label>
+                                <input type="number" class="form-input" value="10" min="0" max="1000">
+                                <div class="password-requirements">Coins given to new users on signup</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Referral Bonus Coins</label>
+                                <input type="number" class="form-input" value="5" min="0" max="1000">
+                                <div class="password-requirements">Coins given for each successful referral</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Server Plan: 24 Hours</label>
+                                <input type="number" class="form-input" value="10" min="0" max="1000">
+                                <div class="password-requirements">Coins required for 24-hour server</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Server Plan: 5 Days</label>
+                                <input type="number" class="form-input" value="50" min="0" max="1000">
+                                <div class="password-requirements">Coins required for 5-day server</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Server Plan: 7 Days</label>
+                                <input type="number" class="form-input" value="100" min="0" max="1000">
+                                <div class="password-requirements">Coins required for 7-day server</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Server Plan: Unlimited</label>
+                                <input type="number" class="form-input" value="300" min="0" max="1000">
+                                <div class="password-requirements">Coins required for unlimited server</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Admin Email</label>
+                            <input type="email" class="form-input" value="inconnuboytech@gmail.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Admin Phone</label>
+                            <input type="text" class="form-input" value="+509 3566 2592">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="settings-section mt-4">
+                    <h3 class="mb-3"><i class="fas fa-shield-alt"></i> Security Settings</h3>
+                    
+                    <div class="notification-item">
+                        <div>
+                            <div class="font-medium">Enable User Registration</div>
+                            <div class="text-secondary text-sm">Allow new users to sign up</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div>
+                            <div class="font-medium">Require Email Verification</div>
+                            <div class="text-secondary text-sm">Users must verify email before using platform</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div>
+                            <div class="font-medium">Enable Maintenance Mode</div>
+                            <div class="text-secondary text-sm">Put platform in maintenance mode</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-primary mt-3">
+                        <i class="fas fa-save"></i> Save Security Settings
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Logs Tab -->
+            <div class="tab-content" id="logsTab">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search logs..." 
+                           onkeyup="searchLogs(this.value)">
+                    <button class="btn btn-primary" onclick="clearLogs()">
+                        <i class="fas fa-trash"></i> Clear Logs
+                    </button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="exportLogs()">
+                        <i class="fas fa-download"></i> Export Logs
+                    </button>
+                    <button class="btn btn-secondary" onclick="filterLogs('error')">
+                        <i class="fas fa-exclamation-circle"></i> Errors Only
+                    </button>
+                    <button class="btn btn-secondary" onclick="filterLogs('warning')">
+                        <i class="fas fa-exclamation-triangle"></i> Warnings Only
+                    </button>
+                    <button class="btn btn-secondary" onclick="filterLogs('info')">
+                        <i class="fas fa-info-circle"></i> Info Only
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Level</th>
+                                <th>Source</th>
+                                <th>Message</th>
+                                <th>IP Address</th>
+                                <th>User</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTable">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                                    <i class="fas fa-clipboard-list" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                    <p>Loading logs...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-secondary" id="logsPaginationInfo">
+                        Showing 0 of 0 logs
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-secondary btn-small" onclick="prevLogsPage()" id="prevLogsBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="nextLogsPage()" id="nextLogsBtn" disabled>
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- User Details Modal -->
+    <div id="userDetailsModal" class="modal hidden">
+        <div class="modal-content">
+            <div id="userDetailsContent">
+                <!-- User details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Recharge Modal -->
+    <div id="rechargeModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Recharge User Coins</h3>
+            <div id="rechargeFormContainer">
+                <!-- Recharge form will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Server Details Modal -->
+    <div id="serverDetailsModal" class="modal hidden">
+        <div class="modal-content">
+            <div id="serverDetailsContent">
+                <!-- Server details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Add New User</h3>
+            <form id="addUserForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Username *</label>
+                        <input type="text" class="form-input" required minlength="3" maxlength="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input type="email" class="form-input" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Password *</label>
+                        <input type="password" class="form-input" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password *</label>
+                        <input type="password" class="form-input" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Initial Coins</label>
+                        <input type="number" class="form-input" value="10" min="0" max="10000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <select class="form-select">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary flex-1">Create User</button>
+                    <button type="button" onclick="closeAddUserModal()" class="btn btn-secondary flex-1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div id="addTransactionModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Add Manual Transaction</h3>
+            <form id="addTransactionForm">
+                <div class="form-group">
+                    <label class="form-label">User *</label>
+                    <select class="form-select" id="transactionUser" required>
+                        <option value="">Select user...</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Amount *</label>
+                        <input type="number" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Type *</label>
+                        <select class="form-select" required>
+                            <option value="admin_recharge">Admin Recharge</option>
+                            <option value="manual_adjustment">Manual Adjustment</option>
+                            <option value="bonus">Bonus</option>
+                            <option value="penalty">Penalty</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-input" rows="3" placeholder="Enter transaction description"></textarea>
+                </div>
+                
+                <div class="flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary flex-1">Add Transaction</button>
+                    <button type="button" onclick="closeAddTransactionModal()" class="btn btn-secondary flex-1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/admin.js"></script>
+    <script>
+        let currentUser = null;
+        let users = [];
+        let servers = [];
+        let transactions = [];
+        let logs = [];
+        
+        let currentPage = {
+            users: 1,
+            servers: 1,
+            transactions: 1,
+            logs: 1
+        };
+        
+        const itemsPerPage = 10;
+        
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check authentication and admin role
+            await checkAdminAccess();
+            
+            // Load user data
+            await loadUserData();
+            
+            // Initialize tabs
+            initializeTabs();
+            
+            // Load initial data
+            await loadStats();
+            await loadUsers();
+            await loadServers();
+            
+            // Update mobile view
+            updateMobileView();
+        });
+        
+        async function checkAdminAccess() {
+            try {
+                const user = await Utils.getCurrentUser();
+                if (!user || user.role !== 'admin') {
+                    window.location.href = '/dashboard';
+                    return;
+                }
+                currentUser = user;
+            } catch (error) {
+                window.location.href = '/login';
+            }
+        }
+        
+        async function loadUserData() {
+            // Update sidebar avatar
+            const avatar = document.getElementById('userAvatar');
+            avatar.textContent = currentUser.username.charAt(0).toUpperCase();
+            avatar.style.background = `linear-gradient(135deg, ${getColorFromName(currentUser.username)}, ${getColorFromName(currentUser.username, true)})`;
+            
+            document.getElementById('userName').textContent = currentUser.username;
+        }
+        
+        async function loadStats() {
+            try {
+                // In a real implementation, this would call your API
+                // Mock data for demonstration
+                document.getElementById('statTotalUsers').textContent = '157';
+                document.getElementById('statTotalServers').textContent = '42';
+                document.getElementById('statTotalCoins').textContent = '2,845';
+                document.getElementById('statGrowth').textContent = '+12.5%';
+                
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+        
+        async function loadUsers(page = 1) {
+            try {
+                // In a real implementation, this would call your API
+                // Mock data for demonstration
+                users = Array.from({ length: 50 }, (_, i) => ({
+                    id: `user-${i}`,
+                    username: `user${i}`,
+                    email: `user${i}@example.com`,
+                    coins: Math.floor(Math.random() * 1000),
+                    role: i === 0 ? 'admin' : 'user',
+                    status: 'active',
+                    created_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    referral_count: Math.floor(Math.random() * 10)
+                }));
+                
+                renderUsersTable(page);
+                
+            } catch (error) {
+                console.error('Failed to load users:', error);
+                Utils.showAlert('Failed to load users', 'error');
+            }
+        }
+        
+        async function loadServers(page = 1) {
+            try {
+                // Mock data for demonstration
+                servers = Array.from({ length: 30 }, (_, i) => ({
+                    id: `server-${i}`,
+                    server_name: `Server ${i}`,
+                    user_id: `user-${Math.floor(Math.random() * 10)}`,
+                    username: `user${Math.floor(Math.random() * 10)}`,
+                    status: Math.random() > 0.3 ? 'active' : 'expired',
+                    coins_used: [10, 50, 100, 300][Math.floor(Math.random() * 4)],
+                    expires_at: new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    created_at: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
+                }));
+                
+                renderServersTable(page);
+                
+            } catch (error) {
+                console.error('Failed to load servers:', error);
+                Utils.showAlert('Failed to load servers', 'error');
+            }
+        }
+        
+        function renderUsersTable(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageUsers = users.slice(startIndex, endIndex);
+            
+            const container = document.getElementById('usersTable');
+            
+            if (pageUsers.length === 0) {
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                            <i class="fas fa-users" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p>No users found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            container.innerHTML = pageUsers.map(user => {
+                const date = new Date(user.created_at);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                
+                return `
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="user-checkbox" value="${user.id}">
+                        </td>
+                        <td>
+                            <div class="font-medium">${user.username}</div>
+                            <div class="text-secondary text-sm">${user.email}</div>
+                        </td>
+                        <td>${Utils.formatCoins(user.coins)} 🪙</td>
+                        <td>
+                            <span class="role-badge role-${user.role}">
+                                ${user.role}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-${user.status}">
+                                ${user.status}
+                            </span>
+                        </td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            <div class="flex gap-1">
+                                <button class="btn btn-primary btn-small" onclick="viewUserDetails('${user.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-success btn-small" onclick="rechargeUser('${user.id}')">
+                                    <i class="fas fa-coins"></i>
+                                </button>
+                                <button class="btn btn-warning btn-small" onclick="editUser('${user.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-small" onclick="deleteUser('${user.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Update pagination info
+            document.getElementById('usersPaginationInfo').textContent = 
+                `Showing ${startIndex + 1}-${Math.min(endIndex, users.length)} of ${users.length} users`;
+            
+            // Update pagination buttons
+            document.getElementById('prevUsersBtn').disabled = page === 1;
+            document.getElementById('nextUsersBtn').disabled = endIndex >= users.length;
+            
+            currentPage.users = page;
+        }
+        
+        function renderServersTable(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageServers = servers.slice(startIndex, endIndex);
+            
+            const container = document.getElementById('serversTable');
+            
+            if (pageServers.length === 0) {
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                            <i class="fas fa-server" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p>No servers found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            container.innerHTML = pageServers.map(server => {
+                const expiresDate = new Date(server.expires_at);
+                const createdDate = new Date(server.created_at);
+                
+                const formattedExpires = server.expires_at ? 
+                    expiresDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 
+                    'Never';
+                
+                const formattedCreated = createdDate.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                return `
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="server-checkbox" value="${server.id}">
+                        </td>
+                        <td>
+                            <div class="font-medium">${server.server_name}</div>
+                            <div class="text-secondary text-sm">ID: ${server.id.substring(0, 8)}</div>
+                        </td>
+                        <td>
+                            <div class="font-medium">${server.username}</div>
+                            <div class="text-secondary text-sm">ID: ${server.user_id.substring(0, 8)}</div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-${server.status}">
+                                ${server.status}
+                            </span>
+                        </td>
+                        <td>${server.coins_used} 🪙</td>
+                        <td>${formattedExpires}</td>
+                        <td>${formattedCreated}</td>
+                        <td>
+                            <div class="flex gap-1">
+                                <button class="btn btn-primary btn-small" onclick="viewServerDetails('${server.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                ${server.status === 'active' ? `
+                                    <button class="btn btn-warning btn-small" onclick="expireServer('${server.id}')">
+                                        <i class="fas fa-clock"></i>
+                                    </button>
+                                ` : ''}
+                                <button class="btn btn-danger btn-small" onclick="deleteServer('${server.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Update pagination info
+            document.getElementById('serversPaginationInfo').textContent = 
+                `Showing ${startIndex + 1}-${Math.min(endIndex, servers.length)} of ${servers.length} servers`;
+            
+            // Update pagination buttons
+            document.getElementById('prevServersBtn').disabled = page === 1;
+            document.getElementById('nextServersBtn').disabled = endIndex >= servers.length;
+            
+            currentPage.servers = page;
+        }
+        
+        function initializeTabs() {
+            const tabs = document.querySelectorAll('.admin-tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}Tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // Load data for the tab if needed
+                    switch(tabId) {
+                        case 'transactions':
+                            loadTransactions();
+                            break;
+                        case 'logs':
+                            loadLogs();
+                            break;
+                    }
+                });
+            });
+        }
+        
+        function viewUserDetails(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const modalContent = document.getElementById('userDetailsContent');
+            const date = new Date(user.created_at);
+            const formattedDate = date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            modalContent.innerHTML = `
+                <div class="user-details">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, ${getColorFromName(user.username)}, ${getColorFromName(user.username, true)}); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white;">
+                            ${user.username.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                            <h3>${user.username}</h3>
+                            <div class="text-secondary">${user.email}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">User ID</div>
+                            <div class="font-mono">${user.id}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Role</div>
+                            <span class="role-badge role-${user.role}">${user.role}</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Coin Balance</div>
+                            <div class="font-bold">${Utils.formatCoins(user.coins)} 🪙</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <span class="status-badge status-${user.status}">${user.status}</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Referrals</div>
+                            <div>${user.referral_count} successful referrals</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Member Since</div>
+                            <div>${formattedDate}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2">
+                    <button onclick="rechargeUser('${user.id}')" class="btn btn-success flex-1">
+                        <i class="fas fa-coins"></i> Recharge Coins
+                    </button>
+                    <button onclick="editUser('${user.id}')" class="btn btn-primary flex-1">
+                        <i class="fas fa-edit"></i> Edit User
+                    </button>
+                    <button onclick="resetPassword('${user.id}')" class="btn btn-warning flex-1">
+                        <i class="fas fa-key"></i> Reset Password
+                    </button>
+                    <button onclick="deleteUser('${user.id}')" class="btn btn-danger flex-1">
+                        <i class="fas fa-trash"></i> Delete User
+                    </button>
+                </div>
+                
+                <div class="flex gap-2 mt-3">
+                    <button onclick="viewUserServers('${user.id}')" class="btn btn-secondary flex-1">
+                        <i class="fas fa-server"></i> View Servers
+                    </button>
+                    <button onclick="viewUserTransactions('${user.id}')" class="btn btn-secondary flex-1">
+                        <i class="fas fa-history"></i> View Transactions
+                    </button>
+                </div>
+                
+                <button onclick="closeUserDetailsModal()" class="btn btn-secondary w-full mt-3">
+                    Close
+                </button>
+            `;
+            
+            document.getElementById('userDetailsModal').classList.remove('hidden');
+        }
+        
+        function closeUserDetailsModal() {
+            document.getElementById('userDetailsModal').classList.add('hidden');
+        }
+        
+        function rechargeUser(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const container = document.getElementById('rechargeFormContainer');
+            container.innerHTML = `
+                <form id="rechargeForm">
+                    <div class="user-details">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, ${getColorFromName(user.username)}, ${getColorFromName(user.username, true)}); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: bold; color: white;">
+                                ${user.username.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="font-medium">${user.username}</div>
+                                <div class="text-secondary text-sm">Current balance: ${Utils.formatCoins(user.coins)} 🪙</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-3">
+                        <label class="form-label">Action</label>
+                        <select class="form-select" id="rechargeAction">
+                            <option value="add">Add Coins</option>
+                            <option value="subtract">Subtract Coins</option>
+                            <option value="set">Set Exact Amount</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Amount</label>
+                        <input type="number" class="form-input" id="rechargeAmount" min="1" max="10000" value="100" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-input" id="rechargeDescription" rows="2" placeholder="Reason for this adjustment"></textarea>
+                    </div>
+                    
+                    <div id="rechargePreview" class="mt-3 p-3 bg-dark-bg rounded">
+                        <div class="text-secondary text-sm">Preview:</div>
+                        <div class="font-medium mt-1">New balance: <span id="previewBalance">${user.coins + 100}</span> 🪙</div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-success flex-1">
+                            <i class="fas fa-check"></i> Apply Recharge
+                        </button>
+                        <button type="button" onclick="closeRechargeModal()" class="btn btn-secondary flex-1">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            `;
+            
+            // Add preview update
+            const amountInput = container.querySelector('#rechargeAmount');
+            const actionSelect = container.querySelector('#rechargeAction');
+            const previewBalance = container.querySelector('#previewBalance');
+            
+            function updatePreview() {
+                const amount = parseInt(amountInput.value) || 0;
+                const action = actionSelect.value;
+                let newBalance = user.coins;
+                
+                switch(action) {
+                    case 'add':
+                        newBalance += amount;
+                        break;
+                    case 'subtract':
+                        newBalance = Math.max(0, newBalance - amount);
+                        break;
+                    case 'set':
+                        newBalance = Math.max(0, amount);
+                        break;
+                }
+                
+                previewBalance.textContent = newBalance;
+            }
+            
+            amountInput.addEventListener('input', updatePreview);
+            actionSelect.addEventListener('change', updatePreview);
+            
+            // Handle form submission
+            const form = container.querySelector('#rechargeForm');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const amount = parseInt(amountInput.value);
+                const action = actionSelect.value;
+                const description = container.querySelector('#rechargeDescription').value;
+                
+                if (isNaN(amount) || amount < 1) {
+                    Utils.showAlert('Please enter a valid amount', 'error');
+                    return;
+                }
+                
+                const button = form.querySelector('button[type="submit"]');
+                const stopLoading = Utils.showLoading(button);
+                
+                try {
+                    // In a real implementation, this would call your API
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    // Update user locally
+                    switch(action) {
+                        case 'add':
+                            user.coins += amount;
+                            break;
+                        case 'subtract':
+                            user.coins = Math.max(0, user.coins - amount);
+                            break;
+                        case 'set':
+                            user.coins = Math.max(0, amount);
+                            break;
+                    }
+                    
+                    Utils.showAlert(`Successfully ${action === 'add' ? 'added' : action === 'subtract' ? 'subtracted' : 'set'} ${amount} coins for ${user.username}`, 'success');
+                    
+                    // Refresh users table
+                    renderUsersTable(currentPage.users);
+                    
+                    // Close modal
+                    closeRechargeModal();
+                    
+                } catch (error) {
+                    Utils.showAlert('Failed to recharge coins', 'error');
+                } finally {
+                    if (stopLoading) stopLoading();
+                }
+            });
+            
+            document.getElementById('rechargeModal').classList.remove('hidden');
+        }
+        
+        function closeRechargeModal() {
+            document.getElementById('rechargeModal').classList.add('hidden');
+        }
+        
+        function viewServerDetails(serverId) {
+            const server = servers.find(s => s.id === serverId);
+            if (!server) return;
+            
+            const modalContent = document.getElementById('serverDetailsContent');
+            const expiresDate = new Date(server.expires_at);
+            const createdDate = new Date(server.created_at);
+            
+            const formattedExpires = server.expires_at ? 
+                expiresDate.toLocaleDateString('en-US', { 
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : 
+                'Never';
+            
+            const formattedCreated = createdDate.toLocaleDateString('en-US', { 
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            modalContent.innerHTML = `
+                <h3>Server Details</h3>
+                
+                <div class="user-details">
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Server Name</div>
+                            <div class="font-bold">${server.server_name}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Server ID</div>
+                            <div class="font-mono">${server.id}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">User</div>
+                            <div>${server.username}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">User ID</div>
+                            <div class="font-mono">${server.user_id}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <span class="status-badge status-${server.status}">${server.status}</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Coins Used</div>
+                            <div class="font-bold">${server.coins_used} 🪙</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Created</div>
+                            <div>${formattedCreated}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Expires</div>
+                            <div>${formattedExpires}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 mt-3">
+                    ${server.status === 'active' ? `
+                        <button onclick="expireServer('${server.id}')" class="btn btn-warning flex-1">
+                            <i class="fas fa-clock"></i> Force Expire
+                        </button>
+                    ` : ''}
+                    <button onclick="deleteServer('${server.id}')" class="btn btn-danger flex-1">
+                        <i class="fas fa-trash"></i> Delete Server
+                    </button>
+                </div>
+                
+                <div class="flex gap-2 mt-3">
+                    <button onclick="viewUserDetails('${server.user_id}')" class="btn btn-secondary flex-1">
+                        <i class="fas fa-user"></i> View User
+                    </button>
+                    <button onclick="closeServerDetailsModal()" class="btn btn-secondary flex-1">
+                        Close
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('serverDetailsModal').classList.remove('hidden');
+        }
+        
+        function closeServerDetailsModal() {
+            document.getElementById('serverDetailsModal').classList.add('hidden');
+        }
+        
+        function expireServer(serverId) {
+            if (!confirm('Are you sure you want to force expire this server?')) return;
+            
+            const server = servers.find(s => s.id === serverId);
+            if (!server) return;
+            
+            server.status = 'expired';
+            Utils.showAlert('Server force expired successfully', 'success');
+            renderServersTable(currentPage.servers);
+        }
+        
+        function deleteServer(serverId) {
+            if (!confirm('Are you sure you want to delete this server? This action cannot be undone.')) return;
+            
+            servers = servers.filter(s => s.id !== serverId);
+            Utils.showAlert('Server deleted successfully', 'success');
+            renderServersTable(currentPage.servers);
+        }
+        
+        function deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user? All their data will be permanently removed.')) return;
+            
+            users = users.filter(u => u.id !== userId);
+            Utils.showAlert('User deleted successfully', 'success');
+            renderUsersTable(currentPage.users);
+        }
+        
+        function editUser(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            Utils.showAlert(`Editing user: ${user.username}`, 'info');
+            // In a real implementation, this would open an edit modal
+        }
+        
+        function resetPassword(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            if (confirm(`Reset password for ${user.username}? A temporary password will be generated.`)) {
+                const tempPassword = Math.random().toString(36).slice(-8);
+                Utils.showAlert(`Temporary password for ${user.username}: ${tempPassword}`, 'success');
+            }
+        }
+        
+        function addNewUser() {
+            document.getElementById('addUserModal').classList.remove('hidden');
+        }
+        
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').classList.add('hidden');
+        }
+        
+        function addTransaction() {
+            document.getElementById('addTransactionModal').classList.remove('hidden');
+            populateTransactionUsers();
+        }
+        
+        function closeAddTransactionModal() {
+            document.getElementById('addTransactionModal').classList.add('hidden');
+        }
+        
+        function populateTransactionUsers() {
+            const select = document.getElementById('transactionUser');
+            select.innerHTML = '<option value="">Select user...</option>';
+            
+            users.slice(0, 20).forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.id;
+                option.textContent = `${user.username} (${user.email}) - ${Utils.formatCoins(user.coins)} 🪙`;
+                select.appendChild(option);
+            });
+        }
+        
+        function searchUsers(query) {
+            const filteredUsers = users.filter(user => 
+                user.username.toLowerCase().includes(query.toLowerCase()) ||
+                user.email.toLowerCase().includes(query.toLowerCase()) ||
+                user.id.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            // Temporarily replace users array for rendering
+            const originalUsers = users;
+            users = filteredUsers;
+            renderUsersTable(1);
+            users = originalUsers;
+        }
+        
+        function searchServers(query) {
+            const filteredServers = servers.filter(server => 
+                server.server_name.toLowerCase().includes(query.toLowerCase()) ||
+                server.username.toLowerCase().includes(query.toLowerCase()) ||
+                server.id.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            const originalServers = servers;
+            servers = filteredServers;
+            renderServersTable(1);
+            servers = originalServers;
+        }
+        
+        function toggleSelectAllUsers() {
+            const selectAll = document.getElementById('selectAllUsers').checked;
+            document.querySelectorAll('.user-checkbox').forEach(checkbox => {
+                checkbox.checked = selectAll;
+            });
+        }
+        
+        function toggleSelectAllServers() {
+            const selectAll = document.getElementById('selectAllServers').checked;
+            document.querySelectorAll('.server-checkbox').forEach(checkbox => {
+                checkbox.checked = selectAll;
+            });
+        }
+        
+        function bulkAction(action) {
+            const selectedUsers = Array.from(document.querySelectorAll('.user-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+            
+            if (selectedUsers.length === 0) {
+                Utils.showAlert('Please select users first', 'warning');
+                return;
+            }
+            
+            if (action === 'delete') {
+                if (!confirm(`Delete ${selectedUsers.length} selected user(s)?`)) return;
+                
+                users = users.filter(user => !selectedUsers.includes(user.id));
+                Utils.showAlert(`Deleted ${selectedUsers.length} user(s)`, 'success');
+                renderUsersTable(currentPage.users);
+            }
+        }
+        
+        function bulkActionServers(action) {
+            const selectedServers = Array.from(document.querySelectorAll('.server-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+            
+            if (selectedServers.length === 0) {
+                Utils.showAlert('Please select servers first', 'warning');
+                return;
+            }
+            
+            if (action === 'delete') {
+                if (!confirm(`Delete ${selectedServers.length} selected server(s)?`)) return;
+                
+                servers = servers.filter(server => !selectedServers.includes(server.id));
+                Utils.showAlert(`Deleted ${selectedServers.length} server(s)`, 'success');
+                renderServersTable(currentPage.servers);
+            } else if (action === 'expire') {
+                if (!confirm(`Force expire ${selectedServers.length} selected server(s)?`)) return;
+                
+                servers.forEach(server => {
+                    if (selectedServers.includes(server.id)) {
+                        server.status = 'expired';
+                    }
+                });
+                
+                Utils.showAlert(`Force expired ${selectedServers.length} server(s)`, 'success');
+                renderServersTable(currentPage.servers);
+            }
+        }
+        
+        function prevUsersPage() {
+            if (currentPage.users > 1) {
+                renderUsersTable(currentPage.users - 1);
+            }
+        }
+        
+        function nextUsersPage() {
+            if (currentPage.users * itemsPerPage < users.length) {
+                renderUsersTable(currentPage.users + 1);
+            }
+        }
+        
+        function prevServersPage() {
+            if (currentPage.servers > 1) {
+                renderServersTable(currentPage.servers - 1);
+            }
+        }
+        
+        function nextServersPage() {
+            if (currentPage.servers * itemsPerPage < servers.length) {
+                renderServersTable(currentPage.servers + 1);
+            }
+        }
+        
+        async function loadTransactions() {
+            // Mock transactions data
+            // In real implementation, this would call your API
+        }
+        
+        async function loadLogs() {
+            // Mock logs data
+            // In real implementation, this would call your API
+        }
+        
+        function refreshAll() {
+            loadStats();
+            loadUsers(currentPage.users);
+            loadServers(currentPage.servers);
+            Utils.showAlert('Data refreshed', 'success');
+        }
+        
+        function exportUsers() {
+            const data = JSON.stringify(users, null, 2);
+            downloadData(data, 'users.json');
+        }
+        
+        function exportServers() {
+            const data = JSON.stringify(servers, null, 2);
+            downloadData(data, 'servers.json');
+        }
+        
+        function exportTransactions() {
+            // In real implementation, export transaction data
+            Utils.showAlert('Feature coming soon', 'info');
+        }
+        
+        function exportLogs() {
+            // In real implementation, export logs data
+            Utils.showAlert('Feature coming soon', 'info');
+        }
+        
+        function downloadData(data, filename) {
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            Utils.showAlert(`Exported ${filename}`, 'success');
+        }
+        
+        function createServerForUser() {
+            Utils.showAlert('Feature coming soon', 'info');
+        }
+        
+        function viewUserServers(userId) {
+            Utils.showAlert('Feature coming soon', 'info');
+        }
+        
+        function viewUserTransactions(userId) {
+            Utils.showAlert('Feature coming soon', 'info');
+        }
+        
+        function getColorFromName(name, dark = false) {
+            const colors = [
+                '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316',
+                '#f59e0b', '#10b981', '#06b6d4', '#3b82f6'
+            ];
+            
+            const index = name.charCodeAt(0) % colors.length;
+            let color = colors[index];
+            
+            if (dark) {
+                color = color.replace('#', '');
+                const r = parseInt(color.substr(0, 2), 16);
+                const g = parseInt(color.substr(2, 2), 16);
+                const b = parseInt(color.substr(4, 2), 16);
+                
+                return `rgb(${Math.max(0, r - 40)}, ${Math.max(0, g - 40)}, ${Math.max(0, b - 40)})`;
+            }
+            
+            return color;
+        }
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+        
+        function updateMobileView() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const menuBtn = document.querySelector('.mobile-menu-btn');
+                
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+        
+        // Update mobile view on resize
+        window.addEventListener('resize', updateMobileView);
+        
+        // Close modals on outside click
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.add('hidden');
+            }
+        });
+        
+        // Handle add user form
+        document.getElementById('addUserForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const button = form.querySelector('button[type="submit"]');
+            const stopLoading = Utils.showLoading(button);
+            
+            try {
+                // In a real implementation, this would call your API
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                Utils.showAlert('User created successfully', 'success');
+                closeAddUserModal();
+                
+                // Refresh users list
+                await loadUsers();
+                
+            } catch (error) {
+                Utils.showAlert('Failed to create user', 'error');
+            } finally {
+                if (stopLoading) stopLoading();
+            }
+        });
+        
+        // Handle add transaction form
+        document.getElementById('addTransactionForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const button = form.querySelector('button[type="submit"]');
+            const stopLoading = Utils.showLoading(button);
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                Utils.showAlert('Transaction added successfully', 'success');
+                closeAddTransactionModal();
+                
+            } catch (error) {
+                Utils.showAlert('Failed to add transaction', 'error');
+            } finally {
+                if (stopLoading) stopLoading();
+            }
+        });
+        
+        // Handle platform settings form
+        document.getElementById('platformSettingsForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const button = e.target.querySelector('button[type="submit"]');
+            const stopLoading = Utils.showLoading(button);
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                Utils.showAlert('Platform settings saved successfully', 'success');
+                
+            } catch (error) {
+                Utils.showAlert('Failed to save settings', 'error');
+            } finally {
+                if (stopLoading) stopLoading();
+            }
+        });
+    </script>
+</body>
+</html>
