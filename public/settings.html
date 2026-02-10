@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - MINI INCONNU XD LITE</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            background: var(--darker-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .user-info {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover {
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+        
+        .main-content {
+            padding: 1.5rem;
+            background: var(--dark-bg);
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .settings-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        .settings-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .settings-tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .settings-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .settings-content {
+            display: none;
+        }
+        
+        .settings-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .settings-section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .settings-section h3 {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .security-note {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger-color);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .security-note.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--secondary-color);
+        }
+        
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .danger-zone {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--danger-color);
+            border-radius: var(--radius);
+            padding: 2rem;
+        }
+        
+        .danger-zone h3 {
+            color: var(--danger-color);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -250px;
+                width: 250px;
+                z-index: 1000;
+                transition: left 0.3s;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--text-primary);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .settings-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="sidebar-logo">
+                    <i class="fas fa-rocket"></i>
+                    MINI INCONNU
+                </a>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div>
+                        <div class="font-medium" id="userName">Loading...</div>
+                        <div class="text-secondary text-sm" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <a href="/dashboard" class="nav-item">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="/profile" class="nav-item">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="/settings" class="nav-item active">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" class="nav-item" onclick="window.admin.openAdminPanel()" id="adminLink" style="display: none;">
+                    <i class="fas fa-user-shield"></i> Admin Panel
+                </a>
+                <div class="nav-item" style="margin-top: 2rem;">
+                    <div class="flex items-center justify-between">
+                        <span>Balance</span>
+                        <span class="coin-balance" id="sidebarCoins">0 🪙</span>
+                    </div>
+                </div>
+                <button onclick="Utils.logout()" class="nav-item" style="background: none; border: none; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="page-header">
+                <div>
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="welcome-message">
+                        <h1>Account Settings</h1>
+                        <p>Manage your account preferences and security</p>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="btn btn-secondary" onclick="window.location.href='/profile'">
+                        <i class="fas fa-user"></i> View Profile
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Settings Container -->
+            <div class="settings-container">
+                <!-- Settings Tabs -->
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-tab="profile">
+                        <i class="fas fa-user-edit"></i> Profile
+                    </button>
+                    <button class="settings-tab" data-tab="security">
+                        <i class="fas fa-shield-alt"></i> Security
+                    </button>
+                    <button class="settings-tab" data-tab="notifications">
+                        <i class="fas fa-bell"></i> Notifications
+                    </button>
+                    <button class="settings-tab" data-tab="preferences">
+                        <i class="fas fa-sliders-h"></i> Preferences
+                    </button>
+                    <button class="settings-tab" data-tab="danger">
+                        <i class="fas fa-exclamation-triangle"></i> Danger Zone
+                    </button>
+                </div>
+                
+                <!-- Profile Settings -->
+                <div class="settings-content active" id="profileTab">
+                    <div class="settings-section">
+                        <h3><i class="fas fa-user-circle"></i> Profile Information</h3>
+                        
+                        <form id="profileForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" id="profileUsername" class="form-input" placeholder="Enter username" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" id="profileEmail" class="form-input" placeholder="Enter email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Bio (Optional)</label>
+                                <textarea id="profileBio" class="form-input" rows="3" placeholder="Tell us about yourself"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3><i class="fas fa-image"></i> Profile Picture</h3>
+                        
+                        <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem;">
+                            <div style="position: relative;">
+                                <div class="profile-avatar-large" id="settingsAvatar">U</div>
+                                <div class="avatar-upload" onclick="document.getElementById('settingsAvatarInput').click()">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p style="margin-bottom: 0.5rem;">Upload a new profile picture</p>
+                                <p class="text-secondary text-sm">JPG, PNG or GIF. Max size 5MB.</p>
+                            </div>
+                        </div>
+                        
+                        <input type="file" id="settingsAvatarInput" accept="image/*" style="display: none;">
+                        
+                        <button onclick="resetAvatar()" class="btn btn-secondary">
+                            <i class="fas fa-undo"></i> Reset to Default
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Security Settings -->
+                <div class="settings-content" id="securityTab">
+                    <div class="settings-section">
+                        <h3><i class="fas fa-lock"></i> Change Password</h3>
+                        
+                        <form id="passwordForm">
+                            <div class="form-group">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">New Password</label>
+                                    <input type="password" id="newPassword" class="form-input" placeholder="Enter new password" required minlength="6">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Confirm New Password</label>
+                                    <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password" required>
+                                </div>
+                            </div>
+                            
+                            <div class="security-note">
+                                <p><strong>Password requirements:</strong></p>
+                                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                                    <li>Minimum 6 characters</li>
+                                    <li>Use a combination of letters, numbers, and symbols</li>
+                                    <li>Avoid using common passwords</li>
+                                </ul>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary mt-3">
+                                <i class="fas fa-key"></i> Update Password
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3><i class="fas fa-shield-alt"></i> Security Settings</h3>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Two-Factor Authentication</div>
+                                <div class="text-secondary text-sm">Add an extra layer of security to your account</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="twoFactorToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Email Notifications for Login</div>
+                                <div class="text-secondary text-sm">Get notified when someone logs into your account</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="loginNotificationsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Session Management</div>
+                                <div class="text-secondary text-sm">View and manage your active sessions</div>
+                            </div>
+                            <button class="btn btn-secondary btn-small" onclick="viewSessions()">
+                                <i class="fas fa-desktop"></i> Manage Sessions
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3><i class="fas fa-history"></i> Login History</h3>
+                        
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date & Time</th>
+                                        <th>IP Address</th>
+                                        <th>Device</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="loginHistory">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                                            <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                            <p>No login history available</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notification Settings -->
+                <div class="settings-content" id="notificationsTab">
+                    <div class="settings-section">
+                        <h3><i class="fas fa-bell"></i> Email Notifications</h3>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Server Expiry Notifications</div>
+                                <div class="text-secondary text-sm">Get notified when your servers are about to expire</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="serverExpiryToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Coin Balance Updates</div>
+                                <div class="text-secondary text-sm">Receive notifications about your coin transactions</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="coinUpdatesToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Referral Notifications</div>
+                                <div class="text-secondary text-sm">Get notified when someone signs up using your referral</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="referralNotificationsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Promotional Emails</div>
+                                <div class="text-secondary text-sm">Receive updates about new features and offers</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="promotionalEmailsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3><i class="fas fa-inbox"></i> Notification Frequency</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email Frequency</label>
+                            <select id="emailFrequency" class="form-select">
+                                <option value="realtime">Real-time</option>
+                                <option value="daily" selected>Daily Digest</option>
+                                <option value="weekly">Weekly Summary</option>
+                                <option value="none">No Emails</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Server Expiry Reminders</label>
+                            <select id="expiryReminders" class="form-select">
+                                <option value="24">24 hours before</option>
+                                <option value="12">12 hours before</option>
+                                <option value="6">6 hours before</option>
+                                <option value="1">1 hour before</option>
+                                <option value="none">No reminders</option>
+                            </select>
+                        </div>
+                        
+                        <button onclick="saveNotificationSettings()" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Preferences
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Preferences Settings -->
+                <div class="settings-content" id="preferencesTab">
+                    <div class="settings-section">
+                        <h3><i class="fas fa-palette"></i> Appearance</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Theme</label>
+                            <select id="themeSelect" class="form-select">
+                                <option value="dark">Dark (Default)</option>
+                                <option value="light">Light</option>
+                                <option value="system">System Preference</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Language</label>
+                            <select id="languageSelect" class="form-select">
+                                <option value="en">English</option>
+                                <option value="fr">French</option>
+                                <option value="es">Spanish</option>
+                                <option value="pt">Portuguese</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Time Zone</label>
+                            <select id="timezoneSelect" class="form-select">
+                                <option value="auto">Auto-detect</option>
+                                <option value="utc">UTC</option>
+                                <option value="est">Eastern Time</option>
+                                <option value="cst">Central Time</option>
+                                <option value="pst">Pacific Time</option>
+                            </select>
+                        </div>
+                        
+                        <button onclick="saveAppearanceSettings()" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Appearance
+                        </button>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3><i class="fas fa-cog"></i> General Preferences</h3>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Auto-refresh Dashboard</div>
+                                <div class="text-secondary text-sm">Automatically refresh dashboard data</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoRefreshToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Show Coin Balance in Header</div>
+                                <div class="text-secondary text-sm">Display your coin balance in the header</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="showCoinsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div>
+                                <div class="font-medium">Compact Mode</div>
+                                <div class="text-secondary text-sm">Use compact layout for tables and lists</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="compactModeToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Danger Zone -->
+                <div class="settings-content" id="dangerTab">
+                    <div class="danger-zone">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                        <p class="mt-2 mb-4">These actions are irreversible. Please proceed with caution.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="mb-2">Export Account Data</h4>
+                                <p class="text-secondary mb-2">Download all your data including profile, servers, and transactions.</p>
+                                <button onclick="exportAllData()" class="btn btn-secondary">
+                                    <i class="fas fa-download"></i> Export All Data
+                                </button>
+                            </div>
+                            
+                            <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                                <h4 class="mb-2">Delete All Servers</h4>
+                                <p class="text-secondary mb-2">Permanently delete all your WhatsApp servers. This action cannot be undone.</p>
+                                <button onclick="deleteAllServers()" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Delete All Servers
+                                </button>
+                            </div>
+                            
+                            <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                                <h4 class="mb-2">Deactivate Account</h4>
+                                <p class="text-secondary mb-2">Temporarily deactivate your account. You can reactivate it later by logging in.</p>
+                                <button onclick="deactivateAccount()" class="btn btn-danger">
+                                    <i class="fas fa-user-slash"></i> Deactivate Account
+                                </button>
+                            </div>
+                            
+                            <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                                <h4 class="mb-2">Delete Account</h4>
+                                <p class="text-secondary mb-2">Permanently delete your account and all associated data. This action is irreversible.</p>
+                                <button onclick="deleteAccount()" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i> Delete Account Permanently
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Sessions Modal -->
+    <div id="sessionsModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Active Sessions</h3>
+            <p class="mt-2 mb-4" style="color: var(--text-secondary);">
+                These are the devices currently logged into your account.
+            </p>
+            
+            <div id="sessionsList">
+                <!-- Sessions will be loaded here -->
+            </div>
+            
+            <div class="flex gap-2 mt-4">
+                <button onclick="logoutAllSessions()" class="btn btn-danger flex-1">
+                    <i class="fas fa-sign-out-alt"></i> Logout All Sessions
+                </button>
+                <button onclick="closeSessionsModal()" class="btn btn-secondary flex-1">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div id="deleteAccountModal" class="modal hidden">
+        <div class="modal-content">
+            <h3 class="text-danger"><i class="fas fa-exclamation-triangle"></i> Delete Account</h3>
+            
+            <div class="alert alert-error">
+                <p><strong>Warning: This action is permanent and cannot be undone.</strong></p>
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li>All your data will be permanently deleted</li>
+                    <li>Your servers will be stopped and removed</li>
+                    <li>Your coin balance will be lost</li>
+                    <li>Referral earnings will be forfeited</li>
+                    <li>This action cannot be reversed</li>
+                </ul>
+            </div>
+            
+            <div class="form-group mt-4">
+                <label class="form-label">Type "DELETE MY ACCOUNT" to confirm</label>
+                <input type="text" id="deleteAccountConfirm" class="form-input" placeholder="Type DELETE MY ACCOUNT here">
+            </div>
+            
+            <div class="flex gap-2 mt-4">
+                <button onclick="confirmAccountDeletion()" class="btn btn-danger flex-1">
+                    <i class="fas fa-trash-alt"></i> Permanently Delete Account
+                </button>
+                <button onclick="closeDeleteAccountModal()" class="btn btn-secondary flex-1">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        let currentUser = null;
+        
+        // Initialize settings
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check authentication
+            if (!Utils.checkAuth()) return;
+            
+            // Load user data
+            await loadUserData();
+            
+            // Initialize tab switching
+            initializeTabs();
+            
+            // Load login history
+            await loadLoginHistory();
+            
+            // Update mobile view
+            updateMobileView();
+            
+            // Load saved settings
+            loadSavedSettings();
+        });
+        
+        async function loadUserData() {
+            try {
+                const data = await Utils.apiRequest('/auth/me');
+                currentUser = data.user;
+                
+                // Update sidebar
+                document.getElementById('userName').textContent = currentUser.username;
+                document.getElementById('userEmail').textContent = currentUser.email;
+                document.getElementById('sidebarCoins').textContent = `${Utils.formatCoins(currentUser.coins)} 🪙`;
+                
+                // Update sidebar avatar
+                const avatar = document.getElementById('userAvatar');
+                avatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                avatar.style.background = `linear-gradient(135deg, ${getColorFromName(currentUser.username)}, ${getColorFromName(currentUser.username, true)})`;
+                
+                // Update profile form
+                document.getElementById('profileUsername').value = currentUser.username;
+                document.getElementById('profileEmail').value = currentUser.email;
+                
+                // Update settings avatar
+                const settingsAvatar = document.getElementById('settingsAvatar');
+                settingsAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                settingsAvatar.style.background = `linear-gradient(135deg, ${getColorFromName(currentUser.username)}, ${getColorFromName(currentUser.username, true)})`;
+                settingsAvatar.style.width = '80px';
+                settingsAvatar.style.height = '80px';
+                settingsAvatar.style.borderRadius = '50%';
+                settingsAvatar.style.display = 'flex';
+                settingsAvatar.style.alignItems = 'center';
+                settingsAvatar.style.justifyContent = 'center';
+                settingsAvatar.style.fontSize = '2rem';
+                settingsAvatar.style.fontWeight = 'bold';
+                settingsAvatar.style.color = 'white';
+                settingsAvatar.style.margin = '0 auto';
+                
+                // Show admin link if user is admin
+                if (currentUser.role === 'admin') {
+                    document.getElementById('adminLink').style.display = 'block';
+                }
+                
+            } catch (error) {
+                console.error('Failed to load user data:', error);
+                Utils.showAlert('Failed to load settings', 'error');
+            }
+        }
+        
+        function initializeTabs() {
+            const tabs = document.querySelectorAll('.settings-tab');
+            const contents = document.querySelectorAll('.settings-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}Tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+        }
+        
+        async function loadLoginHistory() {
+            try {
+                // In a real implementation, this would call your API
+                // Using mock data for demonstration
+                const mockHistory = [
+                    {
+                        date: new Date().toISOString(),
+                        ip: '192.168.1.1',
+                        device: 'Chrome on Windows',
+                        status: 'Success'
+                    },
+                    {
+                        date: new Date(Date.now() - 86400000).toISOString(),
+                        ip: '192.168.1.2',
+                        device: 'Firefox on macOS',
+                        status: 'Success'
+                    },
+                    {
+                        date: new Date(Date.now() - 172800000).toISOString(),
+                        ip: '203.0.113.1',
+                        device: 'Mobile Safari',
+                        status: 'Success'
+                    }
+                ];
+                
+                const container = document.getElementById('loginHistory');
+                
+                if (mockHistory.length === 0) {
+                    container.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                                <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                <p>No login history available</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = mockHistory.map(entry => {
+                    const date = new Date(entry.date);
+                    const formattedDate = date.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    return `
+                        <tr>
+                            <td>${formattedDate}</td>
+                            <td>${entry.ip}</td>
+                            <td>${entry.device}</td>
+                            <td>
+                                <span class="status-badge status-active">${entry.status}</span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Failed to load login history:', error);
+            }
+        }
+        
+        function loadSavedSettings() {
+            // Load settings from localStorage or your backend
+            const settings = JSON.parse(localStorage.getItem('user_settings') || '{}');
+            
+            // Apply saved settings
+            if (settings.theme) {
+                document.getElementById('themeSelect').value = settings.theme;
+            }
+            
+            if (settings.emailFrequency) {
+                document.getElementById('emailFrequency').value = settings.emailFrequency;
+            }
+            
+            if (settings.expiryReminders) {
+                document.getElementById('expiryReminders').value = settings.expiryReminders;
+            }
+            
+            if (settings.language) {
+                document.getElementById('languageSelect').value = settings.language;
+            }
+            
+            if (settings.timezone) {
+                document.getElementById('timezoneSelect').value = settings.timezone;
+            }
+            
+            // Toggle switches
+            const toggles = {
+                'twoFactorToggle': settings.twoFactor || false,
+                'loginNotificationsToggle': settings.loginNotifications || true,
+                'serverExpiryToggle': settings.serverExpiry || true,
+                'coinUpdatesToggle': settings.coinUpdates || true,
+                'referralNotificationsToggle': settings.referralNotifications || true,
+                'promotionalEmailsToggle': settings.promotionalEmails || true,
+                'autoRefreshToggle': settings.autoRefresh || true,
+                'showCoinsToggle': settings.showCoins || true,
+                'compactModeToggle': settings.compactMode || false
+            };
+            
+            Object.entries(toggles).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.checked = value;
+                }
+            });
+        }
+        
+        // Profile form submission
+        document.getElementById('profileForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('profileUsername').value;
+            const email = document.getElementById('profileEmail').value;
+            const bio = document.getElementById('profileBio').value;
+            
+            const button = e.target.querySelector('button[type="submit"]');
+            const stopLoading = Utils.showLoading(button);
+            
+            try {
+                // In a real implementation, this would call your API
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Update local user data
+                currentUser.username = username;
+                currentUser.email = email;
+                
+                // Update sidebar
+                document.getElementById('userName').textContent = username;
+                document.getElementById('userEmail').textContent = email;
+                
+                // Update avatar
+                const avatar = document.getElementById('userAvatar');
+                avatar.textContent = username.charAt(0).toUpperCase();
+                avatar.style.background = `linear-gradient(135deg, ${getColorFromName(username)}, ${getColorFromName(username, true)})`;
+                
+                Utils.showAlert('Profile updated successfully!', 'success');
+                
+            } catch (error) {
+                Utils.showAlert('Failed to update profile', 'error');
+            } finally {
+                if (stopLoading) stopLoading();
+            }
+        });
+        
+        // Password form submission
+        document.getElementById('passwordForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword !== confirmPassword) {
+                Utils.showAlert('New passwords do not match', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                Utils.showAlert('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            const button = e.target.querySelector('button[type="submit"]');
+            const stopLoading = Utils.showLoading(button);
+            
+            try {
+                // In a real implementation, this would call your API
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Clear form
+                e.target.reset();
+                
+                // Show success message
+                const note = document.createElement('div');
+                note.className = 'security-note success';
+                note.innerHTML = '<p><strong>Success!</strong> Your password has been updated.</p>';
+                
+                const form = e.target;
+                form.insertBefore(note, form.querySelector('button[type="submit"]'));
+                
+                // Remove note after 5 seconds
+                setTimeout(() => note.remove(), 5000);
+                
+            } catch (error) {
+                Utils.showAlert('Failed to update password', 'error');
+            } finally {
+                if (stopLoading) stopLoading();
+            }
+        });
+        
+        function viewSessions() {
+            document.getElementById('sessionsModal').classList.remove('hidden');
+            loadSessions();
+        }
+        
+        function closeSessionsModal() {
+            document.getElementById('sessionsModal').classList.add('hidden');
+        }
+        
+        function loadSessions() {
+            const container = document.getElementById('sessionsList');
+            
+            // Mock sessions data
+            const sessions = [
+                {
+                    device: 'Chrome on Windows',
+                    location: 'New York, USA',
+                    lastActive: 'Now',
+                    current: true
+                },
+                {
+                    device: 'Safari on iPhone',
+                    location: 'Miami, USA',
+                    lastActive: '2 hours ago',
+                    current: false
+                },
+                {
+                    device: 'Firefox on macOS',
+                    location: 'London, UK',
+                    lastActive: '1 day ago',
+                    current: false
+                }
+            ];
+            
+            container.innerHTML = sessions.map(session => `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                    <div>
+                        <div class="font-medium">${session.device}</div>
+                        <div class="text-secondary text-sm">${session.location} • Last active: ${session.lastActive}</div>
+                        ${session.current ? '<span class="status-badge status-active" style="margin-top: 0.25rem;">Current Session</span>' : ''}
+                    </div>
+                    ${!session.current ? `
+                        <button class="btn btn-danger btn-small" onclick="logoutSession('${session.device}')">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+        
+        function logoutSession(device) {
+            if (confirm(`Logout from ${device}?`)) {
+                Utils.showAlert(`Logged out from ${device}`, 'success');
+                loadSessions(); // Refresh list
+            }
+        }
+        
+        function logoutAllSessions() {
+            if (confirm('Logout from all devices except this one?')) {
+                Utils.showAlert('Logged out from all other sessions', 'success');
+                closeSessionsModal();
+            }
+        }
+        
+        function saveNotificationSettings() {
+            const settings = {
+                emailFrequency: document.getElementById('emailFrequency').value,
+                expiryReminders: document.getElementById('expiryReminders').value
+            };
+            
+            localStorage.setItem('user_settings', JSON.stringify(settings));
+            Utils.showAlert('Notification settings saved!', 'success');
+        }
+        
+        function saveAppearanceSettings() {
+            const settings = {
+                theme: document.getElementById('themeSelect').value,
+                language: document.getElementById('languageSelect').value,
+                timezone: document.getElementById('timezoneSelect').value
+            };
+            
+            localStorage.setItem('user_settings', JSON.stringify(settings));
+            Utils.showAlert('Appearance settings saved!', 'success');
+        }
+        
+        function exportAllData() {
+            const data = {
+                user: currentUser,
+                settings: JSON.parse(localStorage.getItem('user_settings') || '{}'),
+                timestamp: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `user-settings-${currentUser.username}-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            Utils.showAlert('Settings exported successfully!', 'success');
+        }
+        
+        function deleteAllServers() {
+            if (confirm('Are you sure you want to delete all your servers? This action cannot be undone.')) {
+                const button = document.querySelector('#dangerTab button[onclick="deleteAllServers()"]');
+                const stopLoading = Utils.showLoading(button);
+                
+                setTimeout(() => {
+                    Utils.showAlert('All servers deleted successfully', 'success');
+                    if (stopLoading) stopLoading();
+                }, 1500);
+            }
+        }
+        
+        function deactivateAccount() {
+            if (confirm('Deactivate your account? You can reactivate it by logging in again.')) {
+                const button = document.querySelector('#dangerTab button[onclick="deactivateAccount()"]');
+                const stopLoading = Utils.showLoading(button);
+                
+                setTimeout(() => {
+                    Utils.showAlert('Account deactivated. You will be logged out.', 'success');
+                    
+                    // Logout after delay
+                    setTimeout(() => {
+                        Utils.logout();
+                    }, 2000);
+                    
+                    if (stopLoading) stopLoading();
+                }, 1500);
+            }
+        }
+        
+        function deleteAccount() {
+            document.getElementById('deleteAccountModal').classList.remove('hidden');
+        }
+        
+        function closeDeleteAccountModal() {
+            document.getElementById('deleteAccountModal').classList.add('hidden');
+            document.getElementById('deleteAccountConfirm').value = '';
+        }
+        
+        function confirmAccountDeletion() {
+            const confirmText = document.getElementById('deleteAccountConfirm').value;
+            
+            if (confirmText !== 'DELETE MY ACCOUNT') {
+                Utils.showAlert('Please type "DELETE MY ACCOUNT" to confirm', 'error');
+                return;
+            }
+            
+            if (!confirm('This is your final warning. Are you absolutely sure you want to permanently delete your account?')) {
+                return;
+            }
+            
+            const button = document.querySelector('#deleteAccountModal button[onclick="confirmAccountDeletion()"]');
+            const stopLoading = Utils.showLoading(button);
+            
+            setTimeout(() => {
+                Utils.showAlert('Account permanently deleted. You will be logged out.', 'success');
+                
+                // Logout after delay
+                setTimeout(() => {
+                    Utils.logout();
+                }, 2000);
+                
+                if (stopLoading) stopLoading();
+                closeDeleteAccountModal();
+            }, 2000);
+        }
+        
+        function resetAvatar() {
+            const avatar = document.getElementById('settingsAvatar');
+            avatar.style.background = `linear-gradient(135deg, ${getColorFromName(currentUser.username)}, ${getColorFromName(currentUser.username, true)})`;
+            avatar.style.backgroundImage = 'none';
+            avatar.textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            Utils.showAlert('Avatar reset to default', 'success');
+        }
+        
+        // Handle avatar upload
+        document.getElementById('settingsAvatarInput')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                Utils.showAlert('Please select an image file', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                Utils.showAlert('Image size should be less than 5MB', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const avatar = document.getElementById('settingsAvatar');
+                avatar.style.backgroundImage = `url(${event.target.result})`;
+                avatar.style.backgroundSize = 'cover';
+                avatar.style.backgroundPosition = 'center';
+                avatar.textContent = '';
+                
+                Utils.showAlert('Avatar updated successfully!', 'success');
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        function getColorFromName(name, dark = false) {
+            const colors = [
+                '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316',
+                '#f59e0b', '#10b981', '#06b6d4', '#3b82f6'
+            ];
+            
+            const index = name.charCodeAt(0) % colors.length;
+            let color = colors[index];
+            
+            if (dark) {
+                color = color.replace('#', '');
+                const r = parseInt(color.substr(0, 2), 16);
+                const g = parseInt(color.substr(2, 2), 16);
+                const b = parseInt(color.substr(4, 2), 16);
+                
+                return `rgb(${Math.max(0, r - 40)}, ${Math.max(0, g - 40)}, ${Math.max(0, b - 40)})`;
+            }
+            
+            return color;
+        }
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+        
+        function updateMobileView() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const menuBtn = document.querySelector('.mobile-menu-btn');
+                
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+        
+        // Update mobile view on resize
+        window.addEventListener('resize', updateMobileView);
+        
+        // Admin panel function
+        window.admin = {
+            openAdminPanel: function() {
+                window.location.href = '/admin';
+            }
+        };
+        
+        // Close modals on outside click
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.add('hidden');
+            }
+        });
+        
+        // Save toggle changes
+        document.querySelectorAll('.toggle-switch input').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const settings = JSON.parse(localStorage.getItem('user_settings') || '{}');
+                settings[this.id] = this.checked;
+                localStorage.setItem('user_settings', JSON.stringify(settings));
+                
+                Utils.showAlert('Setting updated', 'info');
+            });
+        });
+    </script>
+</body>
+</html>
