@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINI INCONNU XD LITE - Professional WhatsApp Pairing Platform</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .hero {
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            padding: 4rem 0;
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--card-bg), var(--darker-bg));
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .testimonial {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+        
+        .testimonial-text {
+            font-size: 1.25rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pricing-highlight {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), transparent);
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>MINI INCONNU XD LITE</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="/login" class="nav-link">Login</a>
+                <a href="/signup" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#pricing" class="nav-link">Pricing</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <a href="/login" class="nav-link">Login</a>
+            <a href="/signup" class="btn btn-primary">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Professional WhatsApp Server Platform</h1>
+                <p class="hero-subtitle">
+                    Create and manage WhatsApp servers instantly with our secure coin-based system. 
+                    Perfect for businesses, marketers, and individuals who need reliable WhatsApp pairing.
+                </p>
+                
+                <div class="cta-buttons">
+                    <a href="/signup" class="btn btn-primary btn-large">
+                        <i class="fas fa-rocket"></i> Start Free Trial
+                    </a>
+                    <a href="#how-it-works" class="btn btn-secondary btn-large">
+                        <i class="fas fa-play-circle"></i> See Demo
+                    </a>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Servers Created</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="container" style="padding: 4rem 0;">
+        <h2 class="text-center mb-5">Powerful Features</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Authentication</h3>
+                <p>Military-grade security with JWT tokens, bcrypt password hashing, and secure sessions. Your data is always protected.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h3>Smart Coin System</h3>
+                <p>Get 10 free coins on signup. Earn more through referrals or purchase from admin. Flexible coin management.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3>Server Management</h3>
+                <p>Create servers with different durations. Automatic expiration and cleanup. Real-time server status monitoring.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Instant Pairing</h3>
+                <p>Generate WhatsApp pairing codes instantly. Connect your phone in seconds. Stable and reliable connections.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Advanced Analytics</h3>
+                <p>Track your server usage, coin transactions, and referral earnings with detailed analytics dashboard.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3>Admin Dashboard</h3>
+                <p>Complete control panel for administrators to manage users, coins, servers, and platform settings.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="container" style="padding: 4rem 0; background: var(--darker-bg); border-radius: var(--radius);">
+        <h2 class="text-center mb-5">How It Works</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card text-center">
+                <div class="feature-icon">
+                    <span class="step-number">1</span>
+                </div>
+                <h3>Sign Up</h3>
+                <p>Create your account and get 10 free coins instantly. No credit card required.</p>
+            </div>
+            
+            <div class="feature-card text-center">
+                <div class="feature-icon">
+                    <span class="step-number">2</span>
+                </div>
+                <h3>Get Coins</h3>
+                <p>Earn coins by referring friends or contact admin to purchase more coins.</p>
+            </div>
+            
+            <div class="feature-card text-center">
+                <div class="feature-icon">
+                    <span class="step-number">3</span>
+                </div>
+                <h3>Create Server</h3>
+                <p>Choose a plan, name your server, and create it instantly using your coins.</p>
+            </div>
+            
+            <div class="feature-card text-center">
+                <div class="feature-icon">
+                    <span class="step-number">4</span>
+                </div>
+                <h3>Pair WhatsApp</h3>
+                <p>Enter phone number, get pairing code, and connect your WhatsApp instantly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="container" style="padding: 4rem 0;">
+        <h2 class="text-center mb-5">Simple & Transparent Pricing</h2>
+        
+        <div class="pricing-highlight">
+            <div class="plans-grid">
+                <div class="plan-card">
+                    <div class="plan-coins">10 🪙</div>
+                    <div class="plan-duration">24 Hours</div>
+                    <div class="plan-price">Perfect for testing</div>
+                    <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                        <li>Basic server features</li>
+                        <li>24-hour access</li>
+                        <li>Standard support</li>
+                    </ul>
+                </div>
+                
+                <div class="plan-card">
+                    <div class="plan-coins">50 🪙</div>
+                    <div class="plan-duration">5 Days</div>
+                    <div class="plan-price">Most Popular</div>
+                    <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                        <li>All basic features</li>
+                        <li>5-day access</li>
+                        <li>Priority support</li>
+                        <li>Server monitoring</li>
+                    </ul>
+                </div>
+                
+                <div class="plan-card">
+                    <div class="plan-coins">100 🪙</div>
+                    <div class="plan-duration">7 Days</div>
+                    <div class="plan-price">Weekly Plan</div>
+                    <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                        <li>Extended 7-day access</li>
+                        <li>Premium support</li>
+                        <li>Advanced monitoring</li>
+                        <li>Usage analytics</li>
+                    </ul>
+                </div>
+                
+                <div class="plan-card">
+                    <div class="plan-coins">300 🪙</div>
+                    <div class="plan-duration">Unlimited</div>
+                    <div class="plan-price">Best Value</div>
+                    <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                        <li>Lifetime access</li>
+                        <li>24/7 premium support</li>
+                        <li>Full analytics suite</li>
+                        <li>Priority features</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <p class="text-center mt-4" style="color: var(--text-secondary);">
+                All plans include automatic expiration handling and secure pairing. Get 10 free coins on signup!
+            </p>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <div class="testimonial">
+        <div class="container">
+            <p class="testimonial-text">
+                "This platform revolutionized how we manage our WhatsApp servers. The coin system is brilliant and the automatic expiration saves us so much time. Highly recommended!"
+            </p>
+            <div class="testimonial-author">
+                <strong>Alex Johnson</strong>
+                <div>Marketing Director, TechCorp</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final CTA -->
+    <section class="container" style="padding: 4rem 0;">
+        <div class="card text-center">
+            <h2>Ready to Get Started?</h2>
+            <p class="mt-2 mb-4">Join hundreds of satisfied users who trust our platform for their WhatsApp server needs.</p>
+            
+            <div class="cta-buttons">
+                <a href="/signup" class="btn btn-primary btn-large">
+                    <i class="fas fa-user-plus"></i> Create Free Account
+                </a>
+                <a href="/login" class="btn btn-secondary btn-large">
+                    <i class="fas fa-sign-in-alt"></i> Login to Account
+                </a>
+            </div>
+            
+            <p class="mt-4" style="color: var(--text-secondary);">
+                No credit card required • 10 free coins on signup • 24/7 support
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--darker-bg); padding: 3rem 0; border-top: 1px solid var(--border-color);">
+        <div class="container">
+            <div class="flex justify-between items-center flex-wrap gap-4">
+                <div>
+                    <a href="/" class="logo">
+                        <i class="fas fa-rocket"></i>
+                        MINI INCONNU XD LITE
+                    </a>
+                    <p class="mt-2" style="color: var(--text-secondary); max-width: 300px;">
+                        Professional WhatsApp pairing platform with secure coin system and automatic server management.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4>Quick Links</h4>
+                    <div class="flex flex-col gap-2 mt-2">
+                        <a href="/login" class="nav-link">Login</a>
+                        <a href="/signup" class="nav-link">Sign Up</a>
+                        <a href="#features" class="nav-link">Features</a>
+                        <a href="#pricing" class="nav-link">Pricing</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4>Contact Admin</h4>
+                    <div class="mt-2">
+                        <p><i class="fas fa-envelope"></i> inconnuboytech@gmail.com</p>
+                        <p><i class="fas fa-phone"></i> +509 3566 2592</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8 pt-4 border-t border-gray-800">
+                <p>&copy; 2025 MINI INCONNU XD LITE. All rights reserved.</p>
+                <p class="mt-2" style="color: var(--text-secondary);">
+                    Built with ❤️ for the WhatsApp community
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/utils.js"></script>
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('.mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+        
+        // Add step number styling
+        document.querySelectorAll('.step-number').forEach(step => {
+            step.style.cssText = `
+                display: inline-block;
+                width: 60px;
+                height: 60px;
+                line-height: 60px;
+                background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+                color: white;
+                border-radius: 50%;
+                font-size: 1.5rem;
+                font-weight: bold;
+            `;
+        });
+    </script>
+</body>
+</html>
