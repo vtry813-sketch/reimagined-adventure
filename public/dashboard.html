@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MINI INCONNU XD LITE</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            background: var(--darker-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .user-info {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover {
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+        
+        .main-content {
+            padding: 1.5rem;
+            background: var(--dark-bg);
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .welcome-message h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .welcome-message p {
+            color: var(--text-secondary);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-icon.coins {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        
+        .stat-icon.servers {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .stat-icon.referrals {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .referral-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .referral-link-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .referral-link {
+            font-family: monospace;
+            font-size: 1rem;
+            word-break: break-all;
+            flex: 1;
+        }
+        
+        .servers-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .servers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .server-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s;
+        }
+        
+        .server-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+        
+        .server-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .server-status.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+        }
+        
+        .server-status.expired {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+        
+        .server-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 2px dashed var(--border-color);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -250px;
+                width: 250px;
+                z-index: 1000;
+                transition: left 0.3s;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .quick-actions {
+                flex-direction: column;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .servers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="sidebar-logo">
+                    <i class="fas fa-rocket"></i>
+                    MINI INCONNU
+                </a>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div>
+                        <div class="font-medium" id="userName">Loading...</div>
+                        <div class="text-secondary text-sm" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <a href="/dashboard" class="nav-item active">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="/profile" class="nav-item">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="/settings" class="nav-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" class="nav-item" onclick="window.admin.openAdminPanel()" id="adminLink" style="display: none;">
+                    <i class="fas fa-user-shield"></i> Admin Panel
+                </a>
+                <div class="nav-item" style="margin-top: 2rem;">
+                    <div class="flex items-center justify-between">
+                        <span>Balance</span>
+                        <span class="coin-balance" id="sidebarCoins">0 🪙</span>
+                    </div>
+                </div>
+                <button onclick="Utils.logout()" class="nav-item" style="background: none; border: none; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="page-header">
+                <div>
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="welcome-message">
+                        <h1>Welcome back, <span id="greetingName">User</span>!</h1>
+                        <p>Here's what's happening with your account today.</p>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="btn btn-primary" onclick="openCreateServerModal()">
+                        <i class="fas fa-plus"></i> Create Server
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/profile'">
+                        <i class="fas fa-user"></i> View Profile
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon coins">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-number" id="totalCoins">0</div>
+                    <div class="stat-label">Available Coins</div>
+                    <button class="btn btn-primary btn-small mt-3" onclick="openBuyCoinsModal()">
+                        <i class="fas fa-shopping-cart"></i> Buy More
+                    </button>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon servers">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="stat-number" id="totalServers">0</div>
+                    <div class="stat-label">Active Servers</div>
+                    <button class="btn btn-primary btn-small mt-3" onclick="openCreateServerModal()">
+                        <i class="fas fa-plus"></i> Create New
+                    </button>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon referrals">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <div class="stat-number" id="totalReferrals">0</div>
+                    <div class="stat-label">Successful Referrals</div>
+                    <button class="btn btn-primary btn-small mt-3" onclick="copyReferralLink()">
+                        <i class="fas fa-copy"></i> Copy Link
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Referral Section -->
+            <div class="referral-section">
+                <h3 class="mb-2">Earn Free Coins!</h3>
+                <p>Share your referral link and earn 5 coins for each friend who signs up.</p>
+                
+                <div class="referral-link-container">
+                    <code class="referral-link" id="referralLink">Loading...</code>
+                    <button class="btn btn-secondary" onclick="copyReferralLink()">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+                
+                <p class="text-sm">You'll get 5 coins when someone signs up using your link!</p>
+            </div>
+            
+            <!-- My Servers Section -->
+            <div class="servers-section">
+                <div class="section-header">
+                    <h2>My Servers</h2>
+                    <button class="btn btn-primary" onclick="openCreateServerModal()">
+                        <i class="fas fa-plus"></i> New Server
+                    </button>
+                </div>
+                
+                <div id="serversContainer">
+                    <!-- Servers will be loaded here -->
+                    <div class="empty-state">
+                        <i class="fas fa-server" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem;"></i>
+                        <h3>No Servers Yet</h3>
+                        <p class="mt-2 mb-3">Create your first WhatsApp server to get started!</p>
+                        <button class="btn btn-primary" onclick="openCreateServerModal()">
+                            <i class="fas fa-plus"></i> Create Server
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card">
+                <h3 class="mb-3">Recent Activity</h3>
+                <div id="recentActivity">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>No recent activity</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Create Server Modal -->
+    <div id="createServerModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Create New Server</h3>
+            <p class="mt-2 mb-4" style="color: var(--text-secondary);">
+                Create a new WhatsApp server. Choose a plan based on your needs.
+            </p>
+            
+            <form id="createServerForm">
+                <div class="form-group">
+                    <label class="form-label">Server Name</label>
+                    <input type="text" id="serverName" class="form-input" placeholder="e.g., My Business WhatsApp" required minlength="3" maxlength="100">
+                    <div class="password-requirements">Give your server a descriptive name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Select Plan</label>
+                    <div id="plansContainer" class="plans-grid">
+                        <!-- Plans will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary flex-1">Create Server</button>
+                    <button type="button" onclick="closeCreateServerModal()" class="btn btn-secondary flex-1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Buy Coins Modal -->
+    <div id="buyCoinsModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Purchase Coins</h3>
+            <p class="mt-2 mb-4" style="color: var(--text-secondary);">
+                Contact the admin to purchase additional coins for your account.
+            </p>
+            
+            <div class="card" style="background: rgba(99, 102, 241, 0.1);">
+                <h4 class="mb-2">Contact Information</h4>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-envelope text-primary"></i>
+                        <span>inconnuboytech@gmail.com</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-phone text-primary"></i>
+                        <span>+509 3566 2592</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-comment text-primary"></i>
+                        <span>WhatsApp: +509 3566 2592</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-3 bg-dark-bg rounded">
+                    <p class="text-sm mb-2"><strong>How to purchase:</strong></p>
+                    <ol class="text-sm space-y-1" style="color: var(--text-secondary); padding-left: 1rem;">
+                        <li>Contact admin via email or WhatsApp</li>
+                        <li>Provide your username/email</li>
+                        <li>Specify the number of coins needed</li>
+                        <li>Complete payment (Admin will provide details)</li>
+                        <li>Coins will be added to your account instantly</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="flex gap-2 mt-4">
+                <button onclick="copyAdminContact()" class="btn btn-primary flex-1">
+                    <i class="fas fa-copy"></i> Copy Contact Info
+                </button>
+                <button onclick="closeBuyCoinsModal()" class="btn btn-secondary flex-1">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pairing Code Modal -->
+    <div id="pairingModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Generate Pairing Code</h3>
+            <p class="mt-2 mb-4" style="color: var(--text-secondary);">
+                Enter the phone number to generate WhatsApp pairing code.
+            </p>
+            
+            <form id="pairingForm">
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="phoneNumber" class="form-input" placeholder="e.g., 50935662592" required pattern="[0-9]+" title="Digits only">
+                    <div class="password-requirements">Enter phone number without country code or symbols</div>
+                </div>
+                
+                <div id="pairingResult" class="hidden">
+                    <div class="pairing-code mt-4">
+                        <h2 id="pairingCodeDisplay" class="text-center">XXXX-XXXX-XXXX</h2>
+                        <p class="text-center mt-2 text-secondary">Use this code in WhatsApp to connect</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary flex-1">Generate Code</button>
+                    <button type="button" onclick="closePairingModal()" class="btn btn-secondary flex-1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script>
+        let currentServerId = null;
+        let currentUser = null;
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check authentication
+            if (!Utils.checkAuth()) return;
+            
+            // Load user data
+            await loadUserData();
+            
+            // Initialize dashboard manager
+            window.dashboard = new DashboardManager();
+            
+            // Set greeting based on time
+            setGreeting();
+            
+            // Update mobile view
+            updateMobileView();
+            
+            // Load recent activity
+            loadRecentActivity();
+        });
+        
+        async function loadUserData() {
+            try {
+                const data = await Utils.apiRequest('/auth/me');
+                currentUser = data.user;
+                
+                // Update UI
+                document.getElementById('userName').textContent = currentUser.username;
+                document.getElementById('userEmail').textContent = currentUser.email;
+                document.getElementById('greetingName').textContent = currentUser.username;
+                document.getElementById('sidebarCoins').textContent = `${Utils.formatCoins(currentUser.coins)} 🪙`;
+                document.getElementById('totalCoins').textContent = Utils.formatCoins(currentUser.coins);
+                
+                // Update avatar
+                const avatar = document.getElementById('userAvatar');
+                avatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                avatar.style.background = `linear-gradient(135deg, ${getColorFromName(currentUser.username)}, ${getColorFromName(currentUser.username, true)})`;
+                
+                // Show admin link if user is admin
+                if (currentUser.role === 'admin') {
+                    document.getElementById('adminLink').style.display = 'block';
+                }
+                
+                // Update referral link
+                const referralLink = `${window.location.origin}/signup?ref=${currentUser.referral_code}`;
+                document.getElementById('referralLink').textContent = referralLink;
+                
+            } catch (error) {
+                console.error('Failed to load user data:', error);
+            }
+        }
+        
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let greeting = 'Hello';
+            
+            if (hour < 12) greeting = 'Good morning';
+            else if (hour < 18) greeting = 'Good afternoon';
+            else greeting = 'Good evening';
+            
+            document.getElementById('greetingName').textContent = `${greeting}, ${currentUser.username}`;
+        }
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+        
+        function openCreateServerModal() {
+            document.getElementById('createServerModal').classList.remove('hidden');
+        }
+        
+        function closeCreateServerModal() {
+            document.getElementById('createServerModal').classList.add('hidden');
+        }
+        
+        function openBuyCoinsModal() {
+            document.getElementById('buyCoinsModal').classList.remove('hidden');
+        }
+        
+        function closeBuyCoinsModal() {
+            document.getElementById('buyCoinsModal').classList.add('hidden');
+        }
+        
+        function openPairingModal(serverId) {
+            currentServerId = serverId;
+            document.getElementById('pairingModal').classList.remove('hidden');
+            document.getElementById('pairingResult').classList.add('hidden');
+        }
+        
+        function closePairingModal() {
+            document.getElementById('pairingModal').classList.add('hidden');
+            currentServerId = null;
+        }
+        
+        function copyReferralLink() {
+            const link = document.getElementById('referralLink').textContent;
+            Utils.copyToClipboard(link);
+            Utils.showAlert('Referral link copied to clipboard!', 'success');
+        }
+        
+        function copyAdminContact() {
+            const contactInfo = `Email: inconnuboytech@gmail.com\nPhone: +509 3566 2592`;
+            Utils.copyToClipboard(contactInfo);
+            Utils.showAlert('Admin contact copied to clipboard!', 'success');
+        }
+        
+        // Handle pairing form
+        document.getElementById('pairingForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            
+            if (!currentServerId) {
+                Utils.showAlert('No server selected', 'error');
+                return;
+            }
+            
+            if (!/^\d+$/.test(phoneNumber)) {
+                Utils.showAlert('Please enter a valid phone number (digits only)', 'error');
+                return;
+            }
+            
+            const button = e.target.querySelector('button[type="submit"]');
+            const stopLoading = Utils.showLoading(button);
+            
+            try {
+                // In a real implementation, this would call your API
+                // Simulating API call for demonstration
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Generate mock pairing code
+                const pairingCode = generatePairingCode();
+                
+                // Display result
+                document.getElementById('pairingCodeDisplay').textContent = pairingCode;
+                document.getElementById('pairingResult').classList.remove('hidden');
+                
+                Utils.showAlert('Pairing code generated successfully!', 'success');
+                
+            } catch (error) {
+                Utils.showAlert('Failed to generate pairing code', 'error');
+            } finally {
+                if (stopLoading) stopLoading();
+            }
+        });
+        
+        function generatePairingCode() {
+            const parts = [];
+            for (let i = 0; i < 3; i++) {
+                parts.push(Math.random().toString(36).substring(2, 6).toUpperCase());
+            }
+            return parts.join('-');
+        }
+        
+        function getColorFromName(name, dark = false) {
+            const colors = [
+                '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316',
+                '#f59e0b', '#10b981', '#06b6d4', '#3b82f6'
+            ];
+            
+            const index = name.charCodeAt(0) % colors.length;
+            let color = colors[index];
+            
+            if (dark) {
+                // Darken color
+                color = color.replace('#', '');
+                const r = parseInt(color.substr(0, 2), 16);
+                const g = parseInt(color.substr(2, 2), 16);
+                const b = parseInt(color.substr(4, 2), 16);
+                
+                return `rgb(${Math.max(0, r - 40)}, ${Math.max(0, g - 40)}, ${Math.max(0, b - 40)})`;
+            }
+            
+            return color;
+        }
+        
+        async function loadRecentActivity() {
+            try {
+                // This would call your API in real implementation
+                // For now, using mock data
+                const mockActivity = [
+                    { type: 'server', message: 'Created server "Business WhatsApp"', time: '2 hours ago' },
+                    { type: 'coins', message: 'Received 5 coins from referral', time: '1 day ago' },
+                    { type: 'login', message: 'Logged in from new device', time: '2 days ago' }
+                ];
+                
+                const container = document.getElementById('recentActivity');
+                if (mockActivity.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                            <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p>No recent activity</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = mockActivity.map(activity => `
+                    <div style="display: flex; align-items: center; padding: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-color); display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <i class="fas fa-${activity.type === 'server' ? 'server' : activity.type === 'coins' ? 'coins' : 'user'}"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div>${activity.message}</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">${activity.time}</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Failed to load activity:', error);
+            }
+        }
+        
+        function updateMobileView() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const menuBtn = document.querySelector('.mobile-menu-btn');
+                
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+        
+        // Update mobile view on resize
+        window.addEventListener('resize', updateMobileView);
+        
+        // Admin panel function
+        window.admin = {
+            openAdminPanel: function() {
+                window.location.href = '/admin';
+            }
+        };
+        
+        // Close modals on outside click
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
