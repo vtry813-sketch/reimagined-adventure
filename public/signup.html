@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - MINI INCONNU XD LITE</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            padding: 2rem;
+        }
+        
+        .auth-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 3rem;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .auth-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+        
+        .benefits-list {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .benefits-list h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+        }
+        
+        .benefits-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .benefits-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .benefits-list li i {
+            color: var(--secondary-color);
+        }
+        
+        .password-strength {
+            margin-top: 0.5rem;
+        }
+        
+        .strength-bar {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background-color 0.3s;
+        }
+        
+        .strength-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .password-requirements {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        .referral-bonus {
+            background: linear-gradient(135deg, var(--secondary-color), #059669);
+            color: white;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="/" class="auth-logo">
+                    <i class="fas fa-rocket"></i>
+                    MINI INCONNU XD LITE
+                </a>
+                <h2 class="auth-title">Create Your Account</h2>
+                <p class="auth-subtitle">Get 10 free coins instantly when you sign up!</p>
+            </div>
+            
+            <!-- Benefits -->
+            <div class="benefits-list">
+                <h4>Why join us?</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Get 10 free coins on signup</li>
+                    <li><i class="fas fa-check-circle"></i> Create WhatsApp servers instantly</li>
+                    <li><i class="fas fa-check-circle"></i> Earn coins through referrals</li>
+                    <li><i class="fas fa-check-circle"></i> Secure and reliable platform</li>
+                    <li><i class="fas fa-check-circle"></i> 24/7 admin support</li>
+                </ul>
+            </div>
+            
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+            
+            <!-- Signup Form -->
+            <form id="signupForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="form-label">Username *</label>
+                        <input type="text" id="username" class="form-input" placeholder="Choose a username" required minlength="3" maxlength="50">
+                        <div class="password-requirements">3-50 characters, letters and numbers only</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="form-label">Password *</label>
+                        <input type="password" id="password" class="form-input" placeholder="Create a password" required minlength="6">
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <div class="strength-text" id="strengthText">Password strength</div>
+                        </div>
+                        <div class="password-requirements">Minimum 6 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Referral Code (Optional)</label>
+                    <input type="text" id="referralCode" class="form-input" placeholder="Enter friend's referral code">
+                    <div class="password-requirements">Both you and your friend will get bonus coins!</div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms" style="font-size: 0.875rem; cursor: pointer;">
+                            I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#" class="auth-link">Privacy Policy</a>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="referral-bonus">
+                    <i class="fas fa-gift"></i> Get 10 FREE coins instantly!
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-full mt-4">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Already have an account? 
+                    <a href="/login" class="auth-link">Sign in here</a>
+                </p>
+                <p class="mt-2">
+                    <a href="/" class="auth-link">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+            <h3>Terms of Service</h3>
+            <div style="margin-top: 1rem; color: var(--text-secondary); line-height: 1.6;">
+                <p><strong>Last Updated: January 2024</strong></p>
+                
+                <h4 class="mt-4">1. Acceptance of Terms</h4>
+                <p>By accessing and using MINI INCONNU XD LITE, you accept and agree to be bound by the terms and provision of this agreement.</p>
+                
+                <h4 class="mt-4">2. Description of Service</h4>
+                <p>MINI INCONNU XD LITE provides WhatsApp server creation and management services through a coin-based system. Users can create accounts, earn coins, and use coins to create WhatsApp servers.</p>
+                
+                <h4 class="mt-4">3. User Responsibilities</h4>
+                <p>Users are responsible for maintaining the confidentiality of their account and password. All activities that occur under your account are your responsibility.</p>
+                
+                <h4 class="mt-4">4. Coin System</h4>
+                <p>Coins are virtual currency used within the platform. They have no monetary value and cannot be exchanged for real currency. The platform reserves the right to modify coin values and rules.</p>
+                
+                <h4 class="mt-4">5. Prohibited Activities</h4>
+                <p>Users may not use the service for any illegal activities, spam, harassment, or any activity that violates WhatsApp's terms of service.</p>
+                
+                <h4 class="mt-4">6. Termination</h4>
+                <p>We reserve the right to terminate accounts that violate these terms or engage in prohibited activities.</p>
+                
+                <h4 class="mt-4">7. Limitation of Liability</h4>
+                <p>The service is provided "as is". We are not liable for any damages arising from the use of our service.</p>
+                
+                <h4 class="mt-4">8. Changes to Terms</h4>
+                <p>We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of modified terms.</p>
+                
+                <div class="flex gap-2 mt-6">
+                    <button onclick="closeTermsModal()" class="btn btn-primary flex-1">I Understand</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+            <h3>Privacy Policy</h3>
+            <div style="margin-top: 1rem; color: var(--text-secondary); line-height: 1.6;">
+                <p><strong>Last Updated: January 2024</strong></p>
+                
+                <h4 class="mt-4">1. Information We Collect</h4>
+                <p>We collect information you provide when you register, including username, email address, and password. We also collect usage data and server creation information.</p>
+                
+                <h4 class="mt-4">2. How We Use Information</h4>
+                <p>We use your information to provide and improve our services, process transactions, send notifications, and for security purposes.</p>
+                
+                <h4 class="mt-4">3. Data Security</h4>
+                <p>We implement security measures to protect your data, including encryption and secure servers. However, no method of transmission over the internet is 100% secure.</p>
+                
+                <h4 class="mt-4">4. Data Sharing</h4>
+                <p>We do not sell your personal data. We may share data with service providers who assist in operating our platform, under strict confidentiality agreements.</p>
+                
+                <h4 class="mt-4">5. Cookies</h4>
+                <p>We use cookies to maintain your session and improve your experience. You can control cookies through your browser settings.</p>
+                
+                <h4 class="mt-4">6. Your Rights</h4>
+                <p>You have the right to access, correct, or delete your personal data. Contact us at inconnuboytech@gmail.com for data requests.</p>
+                
+                <h4 class="mt-4">7. Changes to Privacy Policy</h4>
+                <p>We may update this policy. We will notify users of significant changes through email or platform notifications.</p>
+                
+                <div class="flex gap-2 mt-6">
+                    <button onclick="closePrivacyModal()" class="btn btn-primary flex-1">I Understand</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        // Password strength checker
+        document.getElementById('password')?.addEventListener('input', function(e) {
+            const password = e.target.value;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            let color = '#ef4444'; // red
+            let text = 'Weak';
+            
+            if (password.length >= 6) strength++;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            if (strength <= 1) {
+                color = '#ef4444'; // red
+                text = 'Weak';
+            } else if (strength <= 3) {
+                color = '#f59e0b'; // orange
+                text = 'Medium';
+            } else {
+                color = '#10b981'; // green
+                text = 'Strong';
+            }
+            
+            const percentage = Math.min(100, strength * 20);
+            strengthFill.style.width = `${percentage}%`;
+            strengthFill.style.backgroundColor = color;
+            strengthText.textContent = `Password strength: ${text}`;
+            strengthText.style.color = color;
+        });
+        
+        // Check password match
+        document.getElementById('confirmPassword')?.addEventListener('input', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = e.target.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                e.target.style.borderColor = 'var(--danger-color)';
+            } else {
+                e.target.style.borderColor = '';
+            }
+        });
+        
+        // Terms and Privacy modals
+        document.querySelectorAll('a[href="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const text = this.textContent;
+                
+                if (text.includes('Terms')) {
+                    document.getElementById('termsModal').classList.remove('hidden');
+                } else if (text.includes('Privacy')) {
+                    document.getElementById('privacyModal').classList.remove('hidden');
+                }
+            });
+        });
+        
+        function closeTermsModal() {
+            document.getElementById('termsModal').classList.add('hidden');
+        }
+        
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').classList.add('hidden');
+        }
+        
+        // Close modals on outside click
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.add('hidden');
+            }
+        });
+        
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await Utils.getCurrentUser();
+            if (user) {
+                window.location.href = '/dashboard';
+            }
+            
+            // Check for referral code in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if (refCode) {
+                document.getElementById('referralCode').value = refCode;
+            }
+        });
+    </script>
+</body>
+</html>
