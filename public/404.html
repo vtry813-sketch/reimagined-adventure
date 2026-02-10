@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - MINI INCONNU XD LITE</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            padding: 2rem;
+        }
+        
+        .error-content {
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .error-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .error-message {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .error-illustration {
+            font-size: 10rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 6rem;
+            }
+            
+            .error-title {
+                font-size: 1.5rem;
+            }
+            
+            .error-illustration {
+                font-size: 6rem;
+            }
+            
+            .error-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <div class="error-illustration">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            
+            <div class="error-code">404</div>
+            
+            <h1 class="error-title">Page Not Found</h1>
+            
+            <p class="error-message">
+                Oops! The page you're looking for seems to have wandered off into the digital void. 
+                It might have been moved, deleted, or perhaps it never existed in the first place.
+            </p>
+            
+            <div class="error-actions">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <a href="/dashboard" class="btn btn-secondary">
+                    <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+                </a>
+                <button onclick="window.history.back()" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Go Back
+                </button>
+            </div>
+            
+            <div class="mt-8 text-secondary">
+                <p>If you believe this is an error, please contact support:</p>
+                <div class="mt-2">
+                    <p><i class="fas fa-envelope"></i> inconnuboytech@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +509 3566 2592</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-redirect to home after 30 seconds
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 30000);
+        
+        // Add some fun effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const code = document.querySelector('.error-code');
+            let scale = 1;
+            let direction = 0.001;
+            
+            function animate() {
+                scale += direction;
+                if (scale > 1.05 || scale < 0.95) {
+                    direction *= -1;
+                }
+                code.style.transform = `scale(${scale})`;
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        });
+    </script>
+</body>
+</html>
